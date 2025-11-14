@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+  <xacro:macro name="panda_hand" params="enum">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <group name="hand${enum}">
+      <link name="panda${enum}_hand" />
+      <link name="panda${enum}_leftfinger" />
+      <link name="panda${enum}_rightfinger" />
+      <joint name="panda${enum}_finger_joint1" />
+      <passive_joint name="panda${enum}_finger_joint2" />
+    </group>
+
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="open" group="hand${enum}">
+        <joint name="panda${enum}_finger_joint1" value="0.035" />
+        <joint name="panda${enum}_finger_joint2" value="0.035" />
+    </group_state>
+    <group_state name="close" group="hand${enum}">
+        <joint name="panda${enum}_finger_joint1" value="0" />
+        <joint name="panda${enum}_finger_joint2" value="0" />
+    </group_state>
+
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="panda${enum}_hand" link2="panda${enum}_leftfinger" reason="Adjacent" />
+    <disable_collisions link1="panda${enum}_hand" link2="panda${enum}_rightfinger" reason="Adjacent" />
+    <disable_collisions link1="panda${enum}_leftfinger" link2="panda${enum}_rightfinger" reason="Default" />
+  </xacro:macro>
+</robot>
